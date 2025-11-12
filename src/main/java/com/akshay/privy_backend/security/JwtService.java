@@ -1,6 +1,6 @@
 package com.akshay.privy_backend.security;
 
-import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Date;
 import java.util.function.Function;
 
@@ -16,29 +16,28 @@ import io.jsonwebtoken.Jwts;
 @Service
 public class JwtService {
 
-	@Value("${app.jwt.secret}")
-	private String secretKey;
-	
+    private final SecretKey secretKey;
+
 	@Value("${app.jwt.expiration}")
 	private Long jwtExpirationInMs;
 	
-	private SecretKey getSigningKey() {
-	    byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
-	    return new SecretKeySpec(keyBytes, "HmacSHA256");
-	}
+	public JwtService(@Value("${app.jwt.secret}") String secret) {
+        byte[] keyBytes = Base64.getDecoder().decode(secret);
+        this.secretKey = new SecretKeySpec(keyBytes, "HmacSHA256");
+    }
 	
 	public String generateToken(String username) {
 		return Jwts.builder()
 				.subject(username)
 				.issuedAt(new Date(System.currentTimeMillis()))
 				.expiration(new Date(System.currentTimeMillis() + jwtExpirationInMs))
-				.signWith(getSigningKey())
+				.signWith(secretKey)
 				.compact();
 	}
 	
 	private Claims parseClaims(String token) {
 		return Jwts.parser()
-				.verifyWith(getSigningKey())
+				.verifyWith(secretKey)
 				.build()
 				.parseSignedClaims(token)
 				.getPayload();

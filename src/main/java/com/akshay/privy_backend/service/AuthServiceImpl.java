@@ -21,6 +21,9 @@ public class AuthServiceImpl implements AuthService {
 	
 	@Autowired
 	private UserRepository userRepository;
+		
+	@Autowired
+	private DeviceService deviceService;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -41,6 +44,14 @@ public class AuthServiceImpl implements AuthService {
             throw new IllegalArgumentException("Password is too short");
         }
         
+        if (request.getDeviceName() == null || request.getDeviceName().isBlank()) {
+            throw new IllegalArgumentException("Device name is too short");
+        }
+        
+        if (request.getPublicKey() == null || request.getPublicKey().isBlank()) {
+            throw new IllegalArgumentException("Device public key is too short");
+        }
+        
         userRepository.findByUsername(request.getUsername()).ifPresent(u -> {
             throw new IllegalStateException("Username is already taken");
         });
@@ -52,6 +63,8 @@ public class AuthServiceImpl implements AuthService {
         user.setUsername(request.getUsername());
         user.setPasswordHash(hash);
         user.setCreatedAt(Instant.now());
+                
+        deviceService.createDeviceAndPublicKeys(user, request.getDeviceName(), request.getPublicKey(), true);
         
         User savedUser = userRepository.save(user);
         
@@ -75,6 +88,9 @@ public class AuthServiceImpl implements AuthService {
         if (request.getPassword() == null || request.getPassword().length() < 8) {
             throw new IllegalArgumentException("Password is too short");
         }
+        if (request.getDeviceName() == null || request.getDeviceName().isBlank()) {
+            throw new IllegalArgumentException("Device name is too short");
+        }
         
         User user = userRepository.findByUsername(request.getUsername())
         		.orElseThrow(() -> new NoSuchElementException("No such username exists"));
@@ -83,9 +99,16 @@ public class AuthServiceImpl implements AuthService {
             throw new BadCredentialsException("Incorrect password");
         }
         
+        deviceService.saveDeviceAndPublicKeys(user, request.getDeviceName(), request.getPublicKey());
+                
         LoginResponse response = new LoginResponse();
         response.setToken(jwtService.generateToken(request.getUsername()));
         
         return response;
+	}
+
+	@Override
+	public User findByUsername(String username) {
+		return userRepository.findByUsername(username).get();
 	}
 }
