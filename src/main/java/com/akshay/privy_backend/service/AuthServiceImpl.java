@@ -92,8 +92,7 @@ public class AuthServiceImpl implements AuthService {
             throw new IllegalArgumentException("Device name is too short");
         }
         
-        User user = userRepository.findByUsername(request.getUsername())
-        		.orElseThrow(() -> new NoSuchElementException("No such username exists"));
+        User user = findByUsername(request.getUsername());
                 
         if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
             throw new BadCredentialsException("Incorrect password");
@@ -109,6 +108,7 @@ public class AuthServiceImpl implements AuthService {
 
 	@Override
 	public User findByUsername(String username) {
-		return userRepository.findByUsername(username).get();
+		return userRepository.findByUsername(username)
+        		.orElseThrow(() -> new NoSuchElementException("No such username exists"));
 	}
 }

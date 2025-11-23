@@ -132,7 +132,7 @@ public class AuthServiceImplTest {
 		
 		Assertions.assertEquals(false, actualResult);	
 		
-		request.setDeviceName("Chrome");
+		request.setDeviceName("iPhone");
 		actualResult = true;
 		
 		try {
@@ -162,7 +162,7 @@ public class AuthServiceImplTest {
 		RegisterRequest request = new RegisterRequest();
 		request.setUsername("akshay");
 		request.setPassword("akshay123");
-		request.setDeviceName("Chrome");
+		request.setDeviceName("iPhone");
 		request.setPublicKey("publicKey1");
 		
 		User user = new User();
@@ -187,7 +187,7 @@ public class AuthServiceImplTest {
 		RegisterRequest request = new RegisterRequest();
 		request.setUsername("akshay");
 		request.setPassword("akshay123");
-		request.setDeviceName("Chrome");
+		request.setDeviceName("iPhone");
 		request.setPublicKey("publicKey1");
 		
 		Mockito.when(userRepository.findByUsername(anyString())).thenReturn(Optional.empty());
@@ -301,7 +301,7 @@ public class AuthServiceImplTest {
 		LoginRequest request = new LoginRequest();
 		request.setUsername("akshay");
 		request.setPassword("akshay123");
-		request.setDeviceName("Chrome");
+		request.setDeviceName("iPhone");
 		
 		User user = new User();
 		user.setUsername("akshay");
@@ -325,7 +325,7 @@ public class AuthServiceImplTest {
 		LoginRequest request = new LoginRequest();
 		request.setUsername("akshay");
 		request.setPassword("akshay123");
-		request.setDeviceName("Chrome");
+		request.setDeviceName("iPhone");
 		
 		User user = new User();
 		user.setUsername("akshay");
@@ -352,7 +352,7 @@ public class AuthServiceImplTest {
 		LoginRequest request = new LoginRequest();
 		request.setUsername("akshay");
 		request.setPassword("akshay123");
-		request.setDeviceName("Chrome");
+		request.setDeviceName("iPhone");
 		request.setPublicKey("publicKey1");
 				
 		User user = new User();

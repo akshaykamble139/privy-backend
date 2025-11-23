@@ -34,6 +34,22 @@ It does not handle plaintext messages — those remain encrypted on the client.
 
 Later phases will add real-time messaging, encryption workflows, device keys, and secure message storage.
 
+### ✅ Phase 3 — Real-Time Messaging & Delivery Tracking
+
+- WebSocket (STOMP) support added using `/ws` endpoint
+- Secure WebSocket authentication using JWT during CONNECT handshake
+- Message sending implemented via `/app/send`
+- Per-device encrypted message key distribution handled by backend
+- Message storage using ULID-based IDs for chronological ordering
+- Delivery tracking using `message_deliveries` table
+- Status: **PENDING → DELIVERED**
+- Read state tracked separately per-user using read-through API
+- Range ACK support: update delivery status for a **contiguous range** of messages efficiently
+- Media file upload added with deduplication based on SHA-256 hash
+- Automatic cleanup of unused/orphaned media files
+- Backend now fully supports direct chat messaging for multi-device users
+
+
 ## How to Run (Development)
 ### Prerequisites
 - Java 21+

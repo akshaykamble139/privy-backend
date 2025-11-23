@@ -68,7 +68,7 @@ public class DeviceServiceImpl implements DeviceService {
 	@Override
 	public List<DeviceResponse> getAllPublicKeysByUsername(String username) {
 		
-		List<Device> devices = deviceRepository.findByUserUsername(username);
+		List<Device> devices = getUserDevices(username);
 		
 		ArrayList<DeviceResponse> result = new ArrayList<>();
 		
@@ -82,5 +82,15 @@ public class DeviceServiceImpl implements DeviceService {
 		}
 		
 		return result;
+	}
+	
+	@Override
+    public boolean userOwnsDevice(String username, String deviceName) {
+        return deviceRepository.existsByUserUsernameAndDeviceName(username, deviceName);
+    }
+	
+	@Override
+	public List<Device> getUserDevices(String username) {
+	    return deviceRepository.findByUserUsername(username);
 	}
 }

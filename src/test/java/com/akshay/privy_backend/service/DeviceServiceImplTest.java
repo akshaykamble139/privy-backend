@@ -32,8 +32,8 @@ public class DeviceServiceImplTest {
 	@Test
 	public void createDeviceAndPublicKeysTest() {
 		User user = new User();
-		deviceService.createDeviceAndPublicKeys(user, "Chrome", "publicKey1", true);
-		deviceService.createDeviceAndPublicKeys(user, "Chrome", "publicKey2", false);
+		deviceService.createDeviceAndPublicKeys(user, "iPhone", "publicKey1", true);
+		deviceService.createDeviceAndPublicKeys(user, "iPhone", "publicKey2", false);
 	}
 	
 	@Test
@@ -46,14 +46,14 @@ public class DeviceServiceImplTest {
 		Mockito.when(deviceRepository.findByUserUsernameAndDeviceName(
 				anyString(), anyString())).thenReturn(Optional.of(device));
 		
-		deviceService.saveDeviceAndPublicKeys(user, "Chrome", "publicKey");
+		deviceService.saveDeviceAndPublicKeys(user, "iPhone", "publicKey");
 		
 		Mockito.when(deviceRepository.findByUserUsernameAndDeviceName(
 				anyString(), anyString())).thenReturn(Optional.empty());
 		
 		boolean actualResult = true;
 		try {
-			deviceService.saveDeviceAndPublicKeys(user, "Chrome", null);
+			deviceService.saveDeviceAndPublicKeys(user, "iPhone", null);
 		} catch (IllegalArgumentException e) {
 			actualResult = false;
 		}
@@ -62,7 +62,7 @@ public class DeviceServiceImplTest {
 		
 		actualResult = true;
 		try {
-			deviceService.saveDeviceAndPublicKeys(user, "Chrome", "");
+			deviceService.saveDeviceAndPublicKeys(user, "iPhone", "");
 		} catch (IllegalArgumentException e) {
 			actualResult = false;
 		}
@@ -71,7 +71,7 @@ public class DeviceServiceImplTest {
 		
 		actualResult = true;
 		try {
-			deviceService.saveDeviceAndPublicKeys(user, "Chrome", "publicKey");
+			deviceService.saveDeviceAndPublicKeys(user, "iPhone", "publicKey");
 		} catch (IllegalArgumentException e) {
 			actualResult = false;
 		}
@@ -85,7 +85,7 @@ public class DeviceServiceImplTest {
 		ArrayList<Device> devices = new ArrayList<Device>();
 		
 		Device device1 = new Device();
-		device1.setDeviceName("Chrome");
+		device1.setDeviceName("iPhone");
 		
 		DevicePublicKey key1 = new DevicePublicKey();
 		key1.setPublicKey("publicKey1");
@@ -110,6 +110,12 @@ public class DeviceServiceImplTest {
 		List<DeviceResponse> responses = deviceService.getAllPublicKeysByUsername("akshay");
 		
 		Assertions.assertEquals(2, responses.size());
+	}
+	
+	@Test
+	public void userOwnsDeviceTest() {
+		boolean result = deviceService.userOwnsDevice("akshay", "iPhone");
+		Assertions.assertEquals(false, result);
 	}
  
 }

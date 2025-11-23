@@ -8,7 +8,7 @@ import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
 @TestPropertySource(properties = {
-    "app.jwt.secret=mySecretKey1234567890123456789012345678",
+    "app.jwt.secret=YXV0aFNlY3JldEtleTExYXV0aFNlY3JldEtleTExYXV0aFNlY3JldEtleTEx",
     "app.jwt.expiration=3600000"
 })
 public class JwtServiceTest {

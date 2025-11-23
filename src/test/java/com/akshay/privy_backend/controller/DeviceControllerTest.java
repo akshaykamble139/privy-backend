@@ -51,7 +51,7 @@ public class DeviceControllerTest {
 		
 		
 		DeviceResponse response1 = new DeviceResponse();
-		response1.setDeviceName("Chrome");
+		response1.setDeviceName("iPhone");
 		response1.setPublicKey("publicKey1");
 		
 		DeviceResponse response2 = new DeviceResponse();
@@ -67,7 +67,7 @@ public class DeviceControllerTest {
         	mockMvc.perform(get("/api/users/akshay/devices")
         		   .contentType(MediaType.APPLICATION_JSON))
         		   .andExpect(status().isOk())
-        		   .andExpect(jsonPath("$[0].deviceName").value("Chrome"))
+        		   .andExpect(jsonPath("$[0].deviceName").value("iPhone"))
                    .andExpect(jsonPath("$[0].publicKey").value("publicKey1"))
                    .andExpect(jsonPath("$[1].deviceName").value("Pixel"))
                    .andExpect(jsonPath("$[1].publicKey").value("publicKey2"));
@@ -99,7 +99,7 @@ public class DeviceControllerTest {
 			
         	mockMvc.perform(post("/api/devices/register")
         		   .contentType(MediaType.APPLICATION_JSON)
-				   .content("{ \"deviceName\": \"Chrome\", \"publicKey\": \"publicKey\" }"))
+				   .content("{ \"deviceName\": \"iPhone\", \"publicKey\": \"publicKey\" }"))
         	       .andExpect(status().isCreated())
         	       .andExpect(jsonPath("$.message").value("Device registered successfully"));
 		} catch (Exception e) {
